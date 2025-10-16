@@ -1,3 +1,10 @@
+import { Button } from "@/components/ui/button";
+
 export default function LoginPage() {
-  return <div className="bg-yellow-400">Hello Login</div>;
+  return (
+    <div>
+      {" "}
+      <Button>Login</Button>
+    </div>
+  );
 }
