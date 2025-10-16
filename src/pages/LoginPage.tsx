@@ -12,6 +12,20 @@ import { Label } from "@/components/ui/label";
 
 import { Input } from "@/components/ui/input";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
 export default function LoginPage() {
   return (
     <div className="min-w-screen min-h-screen flex justify-center items-center">
