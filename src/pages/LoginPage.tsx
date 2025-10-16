@@ -25,6 +25,7 @@ import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { Link } from "react-router";
 
 export default function LoginPage() {
   const form = useForm<AuthSchemaType>({
@@ -112,9 +113,9 @@ export default function LoginPage() {
               <ButtonComponent type="submit" text="Login" className="w-full" />
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link to={"/register"} className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </CardFooter>
           </form>
