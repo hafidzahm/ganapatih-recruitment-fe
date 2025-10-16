@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import ButtonComponent from "@/components/ButtonComponent";
 import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
+import { http } from "@/utils/axios";
 
 export default function LoginPage() {
   const form = useForm<AuthSchemaType>({
@@ -32,9 +33,19 @@ export default function LoginPage() {
     },
   });
 
-  function submitLogin(values: AuthSchemaType) {
+  async function submitLogin(values: AuthSchemaType) {
     console.log(values);
+    try {
+      const response = await http.post("/login", {
+        username: values.username,
+        password: values.password,
+      });
+      console.log({ response });
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   return (
     <div className="min-w-screen min-h-screen flex justify-center items-center">
       <Form {...form}>
