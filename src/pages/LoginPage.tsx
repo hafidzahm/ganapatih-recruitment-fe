@@ -23,6 +23,8 @@ import {
 import ButtonComponent from "@/components/ButtonComponent";
 import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
 import { http } from "@/utils/axios";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function LoginPage() {
   const form = useForm<AuthSchemaType>({
@@ -41,8 +43,15 @@ export default function LoginPage() {
         password: values.password,
       });
       console.log({ response });
+
+      if (response.status === 200) {
+        toast.success("Login successful");
+      }
     } catch (error) {
-      console.log(error);
+      console.log({ error });
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
     }
   }
 
