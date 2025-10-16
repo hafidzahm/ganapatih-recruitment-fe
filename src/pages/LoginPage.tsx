@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ButtonComponent from "@/components/ButtonComponent";
-import { authSchema, type AuthSchemaType } from "@/utils/loginSchema";
+import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
 
 export default function LoginPage() {
   const form = useForm<AuthSchemaType>({
