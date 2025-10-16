@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/form";
 import ButtonComponent from "@/components/ButtonComponent";
 import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
+import { http } from "@/utils/axios";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 export default function RegisterPage() {
   const form = useForm<AuthSchemaType>({
@@ -32,8 +35,26 @@ export default function RegisterPage() {
     },
   });
 
-  function submitRegister(values: AuthSchemaType) {
+  async function submitRegister(values: AuthSchemaType) {
     console.log(values);
+    try {
+      const response = await http.post("/register", {
+        username: values.username,
+        password: values.password,
+      });
+      console.log({ response });
+
+      if (response.status === 201) {
+        return toast.success(
+          `Account with username ${response.data.username} created successfully`
+        );
+      }
+    } catch (error) {
+      console.log({ error });
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
   }
   return (
     <div className="min-w-screen min-h-screen flex justify-center items-center">
