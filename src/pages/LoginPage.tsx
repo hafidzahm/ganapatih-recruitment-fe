@@ -47,7 +47,6 @@ export default function LoginPage() {
       console.log({ response });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response?.data?.token);
         toast.success("Login successful");
         navigate("/feed");
       }
