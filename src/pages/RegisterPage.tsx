@@ -25,8 +25,10 @@ import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { Link, useNavigate } from "react-router";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -45,8 +47,9 @@ export default function RegisterPage() {
       console.log({ response });
 
       if (response.status === 201) {
+        navigate("/login");
         return toast.success(
-          `Account with username ${response.data.username} created successfully`
+          `Account with username ${response.data.username} created successfully. Lets login with registered account`
         );
       }
     } catch (error) {
@@ -118,10 +121,10 @@ export default function RegisterPage() {
               />
 
               <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Sign up
-                </a>
+                Already have an account?{" "}
+                <Link to={"/login"} className="underline underline-offset-4">
+                  Login
+                </Link>
               </div>
             </CardFooter>
           </form>
