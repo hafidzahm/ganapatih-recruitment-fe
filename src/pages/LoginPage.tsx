@@ -25,9 +25,10 @@ import { authSchema, type AuthSchemaType } from "@/utils/schemas/loginSchema";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -46,7 +47,9 @@ export default function LoginPage() {
       console.log({ response });
 
       if (response.status === 200) {
+        localStorage.setItem("token", response?.data?.token);
         toast.success("Login successful");
+        navigate("/feed");
       }
     } catch (error) {
       console.log({ error });
