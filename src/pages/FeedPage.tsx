@@ -1,6 +1,7 @@
 import ButtonComponent from "@/components/ButtonComponent";
 import { http } from "@/utils/axios";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export default function FeedPage() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function FeedPage() {
       console.log({ response });
       if (response.status === 200) {
         navigate("/login");
+        toast.success("Bye bye, come back later!");
       }
     } catch (error) {
       console.log({ error });
