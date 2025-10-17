@@ -33,7 +33,6 @@ http.interceptors.response.use(
         // Retry the original request using the custom http instance
         return refresh.request(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/login";
         console.log({ refreshError });
 
         return Promise.reject(refreshError);
