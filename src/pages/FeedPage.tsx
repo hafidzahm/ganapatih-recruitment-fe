@@ -1,10 +1,12 @@
 import ButtonComponent from "@/components/ButtonComponent";
+import useFetchPostPagination from "@/hooks/useDataPagination";
 import { http } from "@/utils/axios";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function FeedPage() {
   const navigate = useNavigate();
+  const { post, setPage } = useFetchPostPagination();
 
   async function logout() {
     try {
