@@ -30,15 +30,17 @@ import { Textarea } from "./ui/textarea";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { useDialogState } from "@/hooks/useDialogState";
+import { usePostPaginationContext } from "@/contexts/postPaginationContext";
 
 export default function AddStatusForm() {
+  const { open, setIsOpen } = useDialogState(false);
+  const { applyReload } = usePostPaginationContext();
   const form = useForm<StatusSchemaType>({
     resolver: zodResolver(statusSchema),
     defaultValues: {
       content: "",
     },
   });
-  const { open, setIsOpen } = useDialogState(false);
   const inputtedCharacter = form.watch("content").length;
   const remainingChar = 200 - inputtedCharacter;
 
@@ -57,6 +59,8 @@ export default function AddStatusForm() {
         toast.success("Tweet created!");
       }
       setIsOpen(false);
+      form.reset();
+      applyReload();
     } catch (error) {
       console.log({ error });
       setIsOpen(true);
