@@ -11,6 +11,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import SearchPage from "./pages/SearchPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import PostPaginationContext from "./contexts/postPaginationContext/postPaginationContext";
+import LoginUserContext from "./contexts/loginUserContext/loginUserContext";
 
 createRoot(document.getElementById("root")!).render(
   <PostPaginationContext>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
+
         <Route element={<AuthLayout />}>
           <Route path="/feed" element={<FeedPage />} />
           <Route path="/search" element={<SearchPage />} />

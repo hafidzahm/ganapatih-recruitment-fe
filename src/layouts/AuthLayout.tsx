@@ -1,14 +1,14 @@
 import NavigationBar from "@/components/NavigationBar";
-import useLoginStatus from "@/hooks/useLoginStatus";
+import LoginUserContext from "@/contexts/loginUserContext/loginUserContext";
 import { Outlet } from "react-router";
 
 export default function AuthLayout() {
-  useLoginStatus("Auth");
   return (
-    <div>
-      <NavigationBar />
-
-      <Outlet />
-    </div>
+    <LoginUserContext layout="Auth">
+      <div>
+        <NavigationBar />
+        <Outlet />
+      </div>
+    </LoginUserContext>
   );
 }

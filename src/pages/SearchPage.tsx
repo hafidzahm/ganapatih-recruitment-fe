@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import useLoginUserContext from "@/contexts/loginUserContext/useLoginUserContext";
 import useSearchPagination from "@/hooks/useSearchPagination";
 import { Search } from "lucide-react";
-import type { ChangeEvent } from "react";
+import { useEffect, type ChangeEvent } from "react";
 
 export default function SearchPage() {
-  const { results, setInputSearch, setPage } = useSearchPagination();
+  const { results, setInputSearch, setPage, followeeId } =
+    useSearchPagination();
+  const { userId } = useLoginUserContext();
   async function search(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     try {
@@ -30,14 +33,19 @@ export default function SearchPage() {
         />
       </Button>
       <div className="flex flex-col mt-10 gap-3 w-full max-w-lg">
-        {results.map((result) => {
+        {results.map((result, id) => {
           return (
-            <Card key={result.id}>
+            <Card key={id}>
               <CardContent>
                 <div className="flex flex-row justify-between items-center">
                   <p>{result.username}</p>
-                  <Button>Follow</Button>
+
+                  <Button>
+                    {userId === followeeId[id][0] ? "Unfollow" : "Follow"}
+                  </Button>
                 </div>
+                {/* <p>{userId}</p>
+                <p>{followeeId[id]}</p> */}
               </CardContent>
             </Card>
           );
