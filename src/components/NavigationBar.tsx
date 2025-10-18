@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import {
   NavigationMenu,
@@ -16,10 +16,11 @@ import {
 import { cn } from "@/lib/utils";
 import ButtonComponent from "./ButtonComponent";
 import { http } from "@/utils/axios";
-import { Plus, Search, User } from "lucide-react";
+import { House, Plus, Search, User } from "lucide-react";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
+  const location = useLocation();
   async function logout() {
     try {
       const response = await http.post("/logout");
@@ -42,16 +43,32 @@ export default function NavigationBar() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link to="https://ui.shadcn.com/docs">
+          <Link to={location.pathname === "/search" ? "/feed" : "/search"}>
             <ButtonComponent variant={"reverse"}>
-              <Search />
+              {location.pathname === "/search" ? (
+                <>
+                  <House />
+                </>
+              ) : (
+                <>
+                  <Search />
+                </>
+              )}
             </ButtonComponent>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link to="https://ui.shadcn.com/docs">
+          <Link to={location.pathname === "/me" ? "/feed" : "/me"}>
             <ButtonComponent variant={"reverse"}>
-              <User />
+              {location.pathname === "/me" ? (
+                <>
+                  <House />
+                </>
+              ) : (
+                <>
+                  <User />
+                </>
+              )}
             </ButtonComponent>
           </Link>
         </NavigationMenuItem>

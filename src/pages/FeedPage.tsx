@@ -1,8 +1,6 @@
-import ButtonComponent from "@/components/ButtonComponent";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useFetchPostPagination from "@/hooks/useDataPagination";
-import { logout } from "@/services/AuthService";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export default function FeedPage() {
   const { posts, setPage } = useFetchPostPagination();
