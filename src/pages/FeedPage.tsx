@@ -5,19 +5,12 @@ import { logout } from "@/services/AuthService";
 import { Link, useNavigate } from "react-router";
 
 export default function FeedPage() {
-  const navigate = useNavigate();
   const { posts, setPage } = useFetchPostPagination();
 
   return (
     <>
-      {" "}
-      <ButtonComponent
-        type="button"
-        handleClick={() => logout(navigate)}
-        text="Logout"
-      />
-      <div className="flex justify-center items-center">
-        <div className="max-w-lg flex flex-col gap-3">
+      <div className="flex justify-center items-center pt-5">
+        <div className="max-w-sm flex flex-col gap-3">
           {posts?.map((post, id) => {
             return (
               <Card key={id} className="">
