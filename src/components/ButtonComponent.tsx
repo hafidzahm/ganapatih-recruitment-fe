@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { type MouseEvent } from "react";
+import React, { type MouseEvent } from "react";
 
 export default function ButtonComponent({
   type,
@@ -7,11 +7,13 @@ export default function ButtonComponent({
   variant,
   text,
   handleClick,
+  children,
 }: {
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;
   variant?: "default" | "noShadow" | "neutral" | "reverse" | null | undefined;
-  text: string;
+  text?: string;
+  children?: React.ReactNode;
   // onClick is required because every button should have a click handler
   handleClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }) {
@@ -22,6 +24,7 @@ export default function ButtonComponent({
       variant={variant}
       onClick={handleClick}
     >
+      {children}
       {text}
     </Button>
   );
