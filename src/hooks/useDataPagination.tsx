@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 export default function useFetchPostPagination() {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<Post[]>();
+  const [reload, setReload] = useState(0);
   const limit = 10;
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [reload]);
 
   async function fetchData() {
     try {
@@ -21,5 +22,9 @@ export default function useFetchPostPagination() {
     }
   }
 
-  return { setPage, posts };
+  async function applyReload() {
+    setReload((r) => r + 1);
+  }
+
+  return { setPage, posts, applyReload };
 }

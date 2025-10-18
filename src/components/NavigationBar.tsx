@@ -10,26 +10,12 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-// ------
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
 import { cn } from "@/lib/utils";
 import ButtonComponent from "./ButtonComponent";
 import { http } from "@/utils/axios";
-import { House, Plus, Search, User } from "lucide-react";
+import { House, Search, User } from "lucide-react";
 
-import { DialogTrigger } from "@/components/ui/dialog";
+import AddStatusForm from "./AddStatusForm";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
@@ -49,49 +35,7 @@ export default function NavigationBar() {
     <NavigationMenu className="w-full h-15 max-w-screen fixed bottom-0 z-50 lg:sticky lg:top-0">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant={"neutral"}>
-                <Plus />
-              </Button>
-            </DialogTrigger>
-
-            <form>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Edit profile</DialogTitle>
-                  <DialogDescription>
-                    Make changes to your profile here. Click save when
-                    you&apos;re done.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4">
-                  <div className="grid gap-3">
-                    <Label htmlFor="name-1">Name</Label>
-                    <Input
-                      id="name-1"
-                      name="name"
-                      defaultValue="Pedro Duarte"
-                    />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="username-1">Username</Label>
-                    <Input
-                      id="username-1"
-                      name="username"
-                      defaultValue="@peduarte"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="neutral">Cancel</Button>
-                  </DialogClose>
-                  <Button type="submit">Save changes</Button>
-                </DialogFooter>
-              </DialogContent>
-            </form>
-          </Dialog>
+          <AddStatusForm />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link to={location.pathname === "/search" ? "/feed" : "/search"}>
