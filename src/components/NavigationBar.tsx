@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import ButtonComponent from "./ButtonComponent";
 import { http } from "@/utils/axios";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, User } from "lucide-react";
 
 export default function NavigationBar() {
   const navigate = useNavigate();
@@ -45,6 +45,13 @@ export default function NavigationBar() {
           <Link to="https://ui.shadcn.com/docs">
             <ButtonComponent variant={"reverse"}>
               <Search />
+            </ButtonComponent>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link to="https://ui.shadcn.com/docs">
+            <ButtonComponent variant={"reverse"}>
+              <User />
             </ButtonComponent>
           </Link>
         </NavigationMenuItem>
