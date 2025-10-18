@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 export default function PublicLayout() {
   useLoginStatus("Public");
   return (
-    <div>
+    <div className="min-w-screen min-h-screen">
       <h1>Public Layout</h1>
       <Outlet />
     </div>

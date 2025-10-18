@@ -1,16 +1,10 @@
+import { type Post } from "@/pages/FeedPage";
 import { http } from "@/utils/axios";
 import { useEffect, useState } from "react";
 
 export default function useFetchPostPagination() {
   const [page, setPage] = useState(1);
-  const [post, setPost] = useState([
-    {
-      id: "",
-      userid: "",
-      createdat: "",
-      content: "",
-    },
-  ]);
+  const [posts, setPosts] = useState<Post[]>();
   const limit = 10;
 
   useEffect(() => {
@@ -21,11 +15,11 @@ export default function useFetchPostPagination() {
     try {
       const response = await http.get(`feed?page=${page}&limit=${limit}`);
       console.log({ response: response.data.posts });
-      setPost(response.data.posts);
+      setPosts(response.data.posts);
     } catch (error) {
       console.log({ error });
     }
   }
 
-  return { setPage, post };
+  return { setPage, posts };
 }

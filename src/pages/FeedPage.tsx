@@ -1,17 +1,61 @@
 import ButtonComponent from "@/components/ButtonComponent";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useFetchPostPagination from "@/hooks/useDataPagination";
 import { logout } from "@/services/AuthService";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function FeedPage() {
   const navigate = useNavigate();
-  const { post, setPage } = useFetchPostPagination();
+  const { posts, setPage } = useFetchPostPagination();
 
   return (
-    <ButtonComponent
-      type="button"
-      handleClick={() => logout(navigate)}
-      text="Logout"
-    />
+    <>
+      {" "}
+      <ButtonComponent
+        type="button"
+        handleClick={() => logout(navigate)}
+        text="Logout"
+      />
+      <div className="flex justify-center items-center">
+        <div className="max-w-lg flex flex-col gap-3">
+          {posts?.map((post, id) => {
+            return (
+              <Card key={id} className="">
+                <CardHeader className="">
+                  <CardTitle className="text-sm font-medium">
+                    <Link to={`/`} className="hover:underline">
+                      @{post.username}
+                    </Link>
+                    <span className="text-muted-foreground text-xs ml-2">
+                      {new Date(post.createdat).toLocaleString()}
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 w-full">
+                  <p className="text-justify whitespace-normal break-words">
+                    {post.content}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
+
+export type Post = {
+  id: string;
+  content: string;
+  createdat: string;
+  userid: string;
+  username: string;
+};
+// function CardFeed({ data, id }: { data: Post; id: any }) {
+//   return (
+//     <>
+
+//     </>
+//   );
+// }
