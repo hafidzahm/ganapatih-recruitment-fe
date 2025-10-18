@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import useFetchPostPagination from "@/hooks/useDataPagination";
+import { usePostPaginationContext } from "@/contexts/postPaginationContext";
 import { Link } from "react-router";
 
 export default function FeedPage() {
-  const { posts, setPage } = useFetchPostPagination();
+  const { posts, setPage } = usePostPaginationContext();
 
   return (
     <>

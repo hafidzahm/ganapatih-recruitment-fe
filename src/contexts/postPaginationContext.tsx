@@ -1,6 +1,12 @@
 import type { Post } from "@/pages/FeedPage";
 import { http } from "@/utils/axios";
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 const PostContext = createContext<PostContextType | undefined>(undefined);
 
@@ -27,6 +33,8 @@ export default function PostPaginationContext({
 
   async function fetchData() {
     try {
+      console.log("PaginationContext");
+
       const response = await http.get(`feed?page=${page}&limit=${limit}`);
       console.log({ response: response.data.posts });
       setPosts(response.data.posts);
@@ -47,4 +55,14 @@ export default function PostPaginationContext({
   };
 
   return <PostContext.Provider value={value}> {children}</PostContext.Provider>;
+}
+
+export function usePostPaginationContext() {
+  const context = useContext(PostContext);
+  if (context === undefined) {
+    throw new Error(
+      "UseTableContext must be used within a TableContext.Provider"
+    );
+  }
+  return context;
 }
