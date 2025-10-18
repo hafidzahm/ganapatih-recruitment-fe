@@ -10,7 +10,7 @@ export default function FeedPage() {
   return (
     <>
       <div className="flex justify-center items-center pt-5">
-        <div className="max-w-sm flex flex-col gap-3">
+        <div className="max-w-lg w-full px-5 flex flex-col gap-3">
           {posts?.map((post, id) => {
             return (
               <Card key={id} className="">
