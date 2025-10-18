@@ -10,7 +10,7 @@ import PublicLayout from "./layouts/PublicLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import SearchPage from "./pages/SearchPage";
 import MyProfilePage from "./pages/MyProfilePage";
-import PostPaginationContext from "./contexts/postPaginationContext";
+import PostPaginationContext from "./contexts/postPaginationContext/postPaginationContext";
 
 createRoot(document.getElementById("root")!).render(
   <PostPaginationContext>

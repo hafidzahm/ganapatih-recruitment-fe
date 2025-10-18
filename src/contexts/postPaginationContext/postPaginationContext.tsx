@@ -1,21 +1,7 @@
+import { useEffect, useState, type ReactNode } from "react";
+import { PostContext } from "./contextStore";
 import type { Post } from "@/pages/FeedPage";
 import { http } from "@/utils/axios";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-
-const PostContext = createContext<PostContextType | undefined>(undefined);
-
-type PostContextType = {
-  posts: Post[] | undefined;
-  setPosts: React.Dispatch<React.SetStateAction<Post[] | undefined>>;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  applyReload: () => Promise<void>;
-};
 
 export default function PostPaginationContext({
   children,
@@ -55,14 +41,4 @@ export default function PostPaginationContext({
   };
 
   return <PostContext.Provider value={value}> {children}</PostContext.Provider>;
-}
-
-export function usePostPaginationContext() {
-  const context = useContext(PostContext);
-  if (context === undefined) {
-    throw new Error(
-      "UseTableContext must be used within a TableContext.Provider"
-    );
-  }
-  return context;
 }

@@ -1,9 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { usePostPaginationContext } from "@/contexts/postPaginationContext";
+import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 export default function FeedPage() {
-  const { posts, setPage } = usePostPaginationContext();
+  const { posts, setPage, applyReload } = usePostPaginationContext();
+
+  useEffect(() => {
+    applyReload();
+  }, []);
 
   return (
     <>

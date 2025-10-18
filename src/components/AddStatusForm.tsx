@@ -30,7 +30,7 @@ import { Textarea } from "./ui/textarea";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { useDialogState } from "@/hooks/useDialogState";
-import { usePostPaginationContext } from "@/contexts/postPaginationContext";
+import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
 
 export default function AddStatusForm() {
   const { open, setIsOpen } = useDialogState(false);
