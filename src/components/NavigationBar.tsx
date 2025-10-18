@@ -23,7 +23,7 @@ export default function NavigationBar() {
   const location = useLocation();
   async function logout() {
     try {
-      const response = await http.post("/logout");
+      const response = await http.get("/logout");
       console.log({ response });
       if (response.status === 200) {
         navigate("/login");
@@ -33,18 +33,18 @@ export default function NavigationBar() {
     }
   }
   return (
-    <NavigationMenu className="w-full max-w-screen fixed bottom-0 z-50 lg:sticky lg:top-0">
+    <NavigationMenu className="w-full h-15 max-w-screen fixed bottom-0 z-50 lg:sticky lg:top-0">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link to="https://ui.shadcn.com/docs">
-            <ButtonComponent variant={"reverse"}>
+            <ButtonComponent variant={"neutral"}>
               <Plus />
             </ButtonComponent>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link to={location.pathname === "/search" ? "/feed" : "/search"}>
-            <ButtonComponent variant={"reverse"}>
+            <ButtonComponent variant={"neutral"}>
               {location.pathname === "/search" ? (
                 <>
                   <House />
@@ -59,7 +59,7 @@ export default function NavigationBar() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <Link to={location.pathname === "/me" ? "/feed" : "/me"}>
-            <ButtonComponent variant={"reverse"}>
+            <ButtonComponent variant={"neutral"}>
               {location.pathname === "/me" ? (
                 <>
                   <House />
@@ -77,7 +77,7 @@ export default function NavigationBar() {
             type="button"
             handleClick={logout}
             text="Logout"
-            variant={"reverse"}
+            variant={"neutral"}
           />
         </NavigationMenuItem>
       </NavigationMenuList>
