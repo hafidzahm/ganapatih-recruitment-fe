@@ -15,16 +15,16 @@ export default function FeedPage() {
                 <CardHeader className="">
                   <CardTitle className="text-sm font-medium">
                     <Link to={`/`} className="hover:underline">
-                      @{post.username}
+                      @{post?.username}
                     </Link>
                     <span className="text-muted-foreground text-xs ml-2">
-                      {new Date(post.createdat).toLocaleString()}
+                      {new Date(post?.createdat as string).toLocaleString()}
                     </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0 w-full">
                   <p className="text-justify whitespace-normal break-words">
-                    {post.content}
+                    {post?.content}
                   </p>
                 </CardContent>
               </Card>
@@ -36,17 +36,12 @@ export default function FeedPage() {
   );
 }
 
-export type Post = {
-  id: string;
-  content: string;
-  createdat: string;
-  userid: string;
-  username: string;
-};
-// function CardFeed({ data, id }: { data: Post; id: any }) {
-//   return (
-//     <>
-
-//     </>
-//   );
-// }
+export type Post =
+  | {
+      id: string;
+      content: string;
+      createdat: string;
+      userid: string;
+      username: string;
+    }
+  | undefined;
