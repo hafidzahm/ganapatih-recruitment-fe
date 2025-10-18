@@ -18,19 +18,8 @@ import { House, Search, User } from "lucide-react";
 import AddStatusForm from "./AddStatusForm";
 
 export default function NavigationBar() {
-  const navigate = useNavigate();
   const location = useLocation();
-  async function logout() {
-    try {
-      const response = await http.get("/logout");
-      console.log({ response });
-      if (response.status === 200) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log({ error });
-    }
-  }
+
   return (
     <NavigationMenu className="w-full h-15 max-w-screen fixed bottom-0 z-50 lg:sticky lg:top-0">
       <NavigationMenuList>
@@ -66,14 +55,6 @@ export default function NavigationBar() {
               )}
             </ButtonComponent>
           </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <ButtonComponent
-            type="button"
-            handleClick={logout}
-            text="Logout"
-            variant={"neutral"}
-          />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

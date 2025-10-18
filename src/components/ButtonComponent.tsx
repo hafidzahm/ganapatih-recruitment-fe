@@ -24,8 +24,8 @@ export default function ButtonComponent({
       variant={variant}
       onClick={handleClick}
     >
-      {text}
       {children}
+      {text}
     </Button>
   );
 }

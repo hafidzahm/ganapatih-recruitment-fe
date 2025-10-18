@@ -11,7 +11,6 @@ import AuthLayout from "./layouts/AuthLayout";
 import SearchPage from "./pages/SearchPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import PostPaginationContext from "./contexts/postPaginationContext/postPaginationContext";
-import LoginUserContext from "./contexts/loginUserContext/loginUserContext";
 
 createRoot(document.getElementById("root")!).render(
   <PostPaginationContext>
