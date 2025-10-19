@@ -26,11 +26,13 @@ export default function PostPaginationContext({
       console.log({ response: response.data });
 
       console.log({ response: response.data.posts });
-      const posts = response.data.posts;
-      setTotalPage(response.data.totalPage);
+      const posts = response?.data?.posts;
+
       setPosts((previous) => {
+        if (page === 1) return posts;
         return [...(previous || []), ...(posts || [])];
       });
+      setTotalPage(response?.data?.totalPage);
     } catch (error) {
       console.log({ error });
     }
