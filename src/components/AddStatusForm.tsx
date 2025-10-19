@@ -31,10 +31,26 @@ import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { useDialogState } from "@/hooks/useDialogState";
 import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import getPosts from "@/services/getPosts";
+import type { Post } from "@/pages/FeedPage";
+import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
 export default function AddStatusForm() {
+  const { fetchData } = usePostPaginationContext();
+
+  useQuery<Post[], Error>({
+    queryKey: ["posts"],
+    queryFn: fetchData,
+  });
+
+  const mutation = useMutation({
+    mutationFn: postStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
   const { open, setIsOpen } = useDialogState(false);
-  const { applyReload } = usePostPaginationContext();
   const form = useForm<StatusSchemaType>({
     resolver: zodResolver(statusSchema),
     defaultValues: {
@@ -49,22 +65,24 @@ export default function AddStatusForm() {
       ? `${remainingChar} character remaining`
       : inputtedCharacter > 0 && "Maximum character has reached";
 
-  async function submit(values: StatusSchemaType) {
+  async function postStatus(values: StatusSchemaType) {
     try {
       const response = await http.post("/posts", {
         content: values.content,
       });
-      console.log({ response: response.status });
-      if (response.status === 201) {
+      if (response?.status === 201) {
         toast.success("Tweet created!");
-        applyReload();
       }
       setIsOpen(false);
       form.reset();
+      return response;
     } catch (error) {
       console.log({ error });
       setIsOpen(true);
     }
+  }
+  async function submit(values: StatusSchemaType) {
+    mutation.mutate({ content: values.content });
   }
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
