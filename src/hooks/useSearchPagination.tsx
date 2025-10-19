@@ -13,7 +13,7 @@ export default function useSearchPagination() {
   async function fetchData() {
     try {
       const response = await http.get(
-        `http://localhost:3000/api/users?&page=${page}&limit=10&search=${inputSearch}`
+        `/users?&page=${page}&limit=10&search=${inputSearch}`
       );
       console.log({
         response: response.data.users.map((el) => {
