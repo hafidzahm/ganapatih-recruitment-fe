@@ -27,7 +27,10 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/me" element={<MyProfilePage />} />
         </Route>
       </Routes>
-      <Toaster />
+      <Toaster
+        swipeDirections={["left", "right", "bottom", "top"]}
+        position="bottom-center"
+      />
     </BrowserRouter>
   </PostPaginationContext>
 );

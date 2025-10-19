@@ -6,9 +6,10 @@ export default function useSearchPagination() {
   const [page, setPage] = useState(1);
   const [results, setResults] = useState([]);
   const [followeeId, setFolloweeId] = useState([]);
+  const [fetchPageSearch, setFetchPageSearch] = useState(1);
   useEffect(() => {
     fetchData();
-  }, [inputSearch]);
+  }, [inputSearch, fetchPageSearch]);
 
   async function fetchData() {
     try {
@@ -35,5 +36,9 @@ export default function useSearchPagination() {
     }
   }
 
-  return { setInputSearch, setPage, results, followeeId };
+  async function refetchPageSearch() {
+    setFetchPageSearch((r) => (r += 1));
+  }
+
+  return { setInputSearch, setPage, results, followeeId, refetchPageSearch };
 }
