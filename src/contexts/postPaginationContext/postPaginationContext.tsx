@@ -9,21 +9,28 @@ export default function PostPaginationContext({
   children: ReactNode;
 }) {
   const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState<number>();
   const [posts, setPosts] = useState<Post[]>();
   const [reload, setReload] = useState(0);
   const limit = 10;
 
   useEffect(() => {
     fetchData();
-  }, [reload]);
+  }, [reload, page]);
 
   async function fetchData() {
     try {
       console.log("PaginationContext");
 
       const response = await http.get(`feed?page=${page}&limit=${limit}`);
+      console.log({ response: response.data });
+
       console.log({ response: response.data.posts });
-      setPosts(response.data.posts);
+      const posts = response.data.posts;
+      setTotalPage(response.data.totalPage);
+      setPosts((previous) => {
+        return [...(previous || []), ...(posts || [])];
+      });
     } catch (error) {
       console.log({ error });
     }
@@ -38,6 +45,8 @@ export default function PostPaginationContext({
     setPosts,
     setPage,
     applyReload,
+    page,
+    totalPage,
   };
 
   return <PostContext.Provider value={value}> {children}</PostContext.Provider>;

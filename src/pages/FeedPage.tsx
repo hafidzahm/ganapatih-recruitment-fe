@@ -7,14 +7,16 @@ import { useEffect } from "react";
 import { Link } from "react-router";
 import TimeAgo from "react-timeago";
 import { toast } from "sonner";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function FeedPage() {
-  const { posts, setPage, applyReload } = usePostPaginationContext();
+  const { posts, setPage, applyReload, page, totalPage } =
+    usePostPaginationContext();
   const { userId } = useLoginUserContext();
 
-  useEffect(() => {
-    applyReload();
-  }, []);
+  async function nextPage() {
+    setPage((page) => (page += 1));
+  }
 
   async function unfollow(user) {
     try {
@@ -74,6 +76,9 @@ export default function FeedPage() {
               </Card>
             );
           })}
+          {page < totalPage && (
+            <ButtonComponent text="Next" handleClick={nextPage} />
+          )}
         </div>
       </div>
     </>

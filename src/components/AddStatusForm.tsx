@@ -57,10 +57,10 @@ export default function AddStatusForm() {
       console.log({ response: response.status });
       if (response.status === 201) {
         toast.success("Tweet created!");
+        applyReload();
       }
       setIsOpen(false);
       form.reset();
-      applyReload();
     } catch (error) {
       console.log({ error });
       setIsOpen(true);
