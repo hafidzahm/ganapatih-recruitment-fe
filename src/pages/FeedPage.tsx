@@ -12,9 +12,11 @@ import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2Icon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FeedPage() {
-  const { posts, setPage, page, totalPage } = usePostPaginationContext();
+  const { posts, setPage, page, totalPage, isLoading } =
+    usePostPaginationContext();
   const { userId, following } = useLoginUserContext();
 
   function nextPage() {
@@ -30,7 +32,11 @@ export default function FeedPage() {
           <div className="sticky top-5 z-50 xl:top-20">
             {(following?.length as number) < 1 && (
               <>
-                <AlertNoFollowing />
+                {!isLoading && (
+                  <>
+                    <AlertNoFollowing />
+                  </>
+                )}
               </>
             )}
           </div>
@@ -41,9 +47,12 @@ export default function FeedPage() {
             hasMore={page < totalPage}
             loader={<h4>{""}</h4>}
             endMessage={
-              <p className="text-center pt-5">
-                <b>Whehehe you reached the limit :)</b>
-              </p>
+              !isLoading &&
+              (following?.length as number) > 1 && (
+                <p className="text-center pt-5">
+                  <b>Whehehe you reached the limit :)</b>
+                </p>
+              )
             }
           >
             <div className="flex flex-col gap-6">
@@ -60,6 +69,7 @@ export default function FeedPage() {
 
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
+  const { isLoading } = usePostPaginationContext();
 
   const mutation = useMutation({
     mutationFn: unfollowApi,
@@ -89,22 +99,51 @@ export function CardStatusComponent({ post, id }) {
         <CardTitle className="text-sm font-medium">
           <div className="flex flex-row justify-between items-center">
             <div>
-              <Link to={`/`} className="hover:underline">
-                @{post?.username}
-              </Link>
+              {isLoading ? (
+                <>
+                  {" "}
+                  <Skeleton className="h-4 min-w-20" />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Link to={`/`} className="hover:underline">
+                    @{post?.username}
+                  </Link>
+                </>
+              )}
+
               <div>
-                <TimeAgo
-                  live={true}
-                  date={new Date(post?.createdat as string).toISOString()}
-                />
+                {isLoading ? (
+                  <>
+                    <Skeleton className="h-4 min-w-10" />
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <TimeAgo
+                      live={true}
+                      date={new Date(post?.createdat as string).toISOString()}
+                    />
+                  </>
+                )}
               </div>
             </div>
+
             {post?.userid !== userId ? (
               <>
-                <ButtonComponent
-                  handleClick={() => unfollow(post)}
-                  text="Unfollow"
-                />
+                {isLoading ? (
+                  <>
+                    <Skeleton className="h-10 bg-green-400 sm:w-[200px] w-[100px]" />
+                  </>
+                ) : (
+                  <>
+                    <ButtonComponent
+                      handleClick={() => unfollow(post)}
+                      text="Unfollow"
+                    />
+                  </>
+                )}
               </>
             ) : (
               ""
@@ -113,9 +152,23 @@ export function CardStatusComponent({ post, id }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0 text-xl text-bold w-full">
-        <p className="text-justify whitespace-normal break-words">
-          {post?.content}
-        </p>
+        {isLoading ? (
+          <>
+            {" "}
+            <Skeleton className="h-5 w-60" />
+            <Skeleton className="h-5 w-60" />
+            <Skeleton className="h-5 w-60" />
+            <Skeleton className="h-5 w-60" />
+            <Skeleton className="h-5 w-60" />
+          </>
+        ) : (
+          <>
+            {" "}
+            <p className="text-justify whitespace-normal break-words">
+              {post?.content}
+            </p>
+          </>
+        )}
       </CardContent>
     </Card>
   );

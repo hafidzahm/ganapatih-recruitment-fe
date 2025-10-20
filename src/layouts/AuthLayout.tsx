@@ -15,7 +15,7 @@ export default function AuthLayout() {
           <Outlet />
         </div>
       </PostPaginationContext>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </LoginUserContext>
   );
 }

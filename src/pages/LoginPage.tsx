@@ -26,8 +26,12 @@ import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
@@ -40,6 +44,7 @@ export default function LoginPage() {
   async function submitLogin(values: AuthSchemaType) {
     console.log(values);
     try {
+      setLoading(true);
       const response = await http.post("/login", {
         username: values.username,
         password: values.password,
@@ -48,13 +53,19 @@ export default function LoginPage() {
 
       if (response.status === 200) {
         toast.success("Login successful");
+        setLoading(false);
+
         navigate("/feed");
       }
+
+      return response;
     } catch (error) {
       console.log({ error });
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -112,7 +123,9 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex-col gap-2 pt-6">
-              <ButtonComponent type="submit" text="Login" className="w-full" />
+              <ButtonComponent type="submit" className="w-full">
+                {loading ? <Loading /> : <>Login</>}
+              </ButtonComponent>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link to={"/register"} className="underline underline-offset-4">

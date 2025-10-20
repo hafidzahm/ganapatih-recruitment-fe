@@ -14,4 +14,5 @@ export type PostContextType = {
   page: number;
   totalPage: number;
   limit: number;
+  isLoading: boolean;
 };

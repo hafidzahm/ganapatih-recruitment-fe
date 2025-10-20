@@ -43,7 +43,7 @@ export default function PostPaginationContext({
     }
   }
 
-  useQuery<Post[], Error>({
+  const { isLoading } = useQuery<Post[], Error>({
     queryKey: ["posts"],
     queryFn: fetchData,
     refetchOnMount: "always",
@@ -62,6 +62,7 @@ export default function PostPaginationContext({
     page,
     totalPage,
     fetchData,
+    isLoading,
   };
 
   return <PostContext.Provider value={value}> {children}</PostContext.Provider>;
