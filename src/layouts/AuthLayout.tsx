@@ -1,10 +1,7 @@
 import NavigationBar from "@/components/NavigationBar";
 import LoginUserContext from "@/contexts/loginUserContext/loginUserContext";
 import PostPaginationContext from "@/contexts/postPaginationContext/postPaginationContext";
-import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { Outlet } from "react-router";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function AuthLayout() {
   return (
@@ -15,7 +12,6 @@ export default function AuthLayout() {
           <Outlet />
         </div>
       </PostPaginationContext>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </LoginUserContext>
   );
 }

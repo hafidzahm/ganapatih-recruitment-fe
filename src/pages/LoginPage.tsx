@@ -26,7 +26,6 @@ import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Loading from "@/components/Loading";
 

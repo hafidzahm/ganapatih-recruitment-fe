@@ -7,10 +7,10 @@ import { Link } from "react-router";
 import TimeAgo from "react-timeago";
 import { toast } from "sonner";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2Icon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Loading from "@/components/Loading";
@@ -18,7 +18,7 @@ import Loading from "@/components/Loading";
 export default function FeedPage() {
   const { posts, setPage, page, totalPage, isLoading } =
     usePostPaginationContext();
-  const { userId, following } = useLoginUserContext();
+  const { following } = useLoginUserContext();
 
   function nextPage() {
     setPage((prev) => {
@@ -68,7 +68,13 @@ export default function FeedPage() {
   );
 }
 
-export function CardStatusComponent({ post, id }) {
+export function CardStatusComponent({
+  post,
+  id,
+}: {
+  post: Post;
+  id: string | number;
+}) {
   const { userId } = useLoginUserContext();
   const { isLoading } = usePostPaginationContext();
   // const [loadingUnfollow, ]
@@ -83,7 +89,12 @@ export function CardStatusComponent({ post, id }) {
       ]),
   });
 
-  async function unfollowApi(user) {
+  type UserApi = {
+    userid: string;
+    username: string;
+  };
+
+  async function unfollowApi(user: UserApi) {
     const response = await http.delete(`/follow/${user.userid}`);
 
     if (response.status === 200) {
@@ -92,7 +103,7 @@ export function CardStatusComponent({ post, id }) {
     console.log({ response });
     return response;
   }
-  async function unfollow(user) {
+  async function unfollow(user: UserApi) {
     mutation.mutate(user);
   }
   return (
@@ -140,7 +151,9 @@ export function CardStatusComponent({ post, id }) {
                   </>
                 ) : (
                   <>
-                    <ButtonComponent handleClick={() => unfollow(post)}>
+                    <ButtonComponent
+                      handleClick={() => unfollow(post as UserApi)}
+                    >
                       {mutation.isPending ? <Loading /> : "Unfollow"}
                     </ButtonComponent>
                   </>

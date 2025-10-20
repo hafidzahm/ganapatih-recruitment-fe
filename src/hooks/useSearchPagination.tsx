@@ -28,7 +28,6 @@ export default function useSearchPagination() {
   const [page, setPage] = useState(1);
   const [results, setResults] = useState<UserSearchResult[]>([]);
   const [followeeId, setFolloweeId] = useState<(string | undefined)[][]>([]);
-  const [fetchPageSearch, setFetchPageSearch] = useState(1);
   useEffect(() => {
     if (inputSearch) {
       fetchData();

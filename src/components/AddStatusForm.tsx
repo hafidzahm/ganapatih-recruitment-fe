@@ -30,10 +30,7 @@ import { Textarea } from "./ui/textarea";
 import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { useDialogState } from "@/hooks/useDialogState";
-import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import getPosts from "@/services/getPosts";
-import type { Post } from "@/pages/FeedPage";
+import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 import Loading from "./Loading";
 

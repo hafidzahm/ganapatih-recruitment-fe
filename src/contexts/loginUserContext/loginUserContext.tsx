@@ -1,6 +1,6 @@
 import { http } from "@/utils/axios";
 import { AxiosError } from "axios";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { UserContext } from "./contextStore";

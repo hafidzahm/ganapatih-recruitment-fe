@@ -14,14 +14,13 @@ import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 import Loading from "@/components/Loading";
 
 export default function SearchPage() {
-  const { results, setInputSearch, setPage, followeeId } =
-    useSearchPagination();
+  const { results, setInputSearch, followeeId } = useSearchPagination();
   const { userId } = useLoginUserContext();
-  const [followId, setFollowId] = useState(null);
-  const [unfollowId, setUnfollowId] = useState(null);
+  const [followId, setFollowId] = useState<string | null>(null);
+  const [unfollowId, setUnfollowId] = useState<string | null>(null);
 
   const mutationFollow = useMutation({
-    mutationFn: (user) => apiFollow(user),
+    mutationFn: (user: UserApi) => apiFollow(user),
 
     onSuccess: async () =>
       await Promise.all([
@@ -31,7 +30,7 @@ export default function SearchPage() {
       ]),
   });
   const mutationUnfollow = useMutation({
-    mutationFn: (user) => apiUnfollow(user),
+    mutationFn: (user: UserApi) => apiUnfollow(user),
     onSuccess: async () =>
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["users"] }),
@@ -50,7 +49,12 @@ export default function SearchPage() {
     }
   }
 
-  async function apiFollow(user) {
+  type UserApi = {
+    id: string;
+    username: string;
+  };
+
+  async function apiFollow(user: UserApi) {
     try {
       const response = await http.post(`/follow/${user.id}`);
       console.log({ response });
@@ -67,7 +71,7 @@ export default function SearchPage() {
       }
     }
   }
-  async function apiUnfollow(user) {
+  async function apiUnfollow(user: UserApi) {
     try {
       const response = await http.delete(`/follow/${user.id}`);
       if (response.status === 200) {
@@ -79,13 +83,13 @@ export default function SearchPage() {
     }
   }
 
-  async function follow(user) {
-    setFollowId(user.id);
+  async function follow(user: UserApi) {
+    setFollowId(user.id as string);
     mutationFollow.mutate(user, {
       onSettled: () => setFollowId(null),
     });
   }
-  async function unfollow(user) {
+  async function unfollow(user: UserApi) {
     setUnfollowId(user.id);
     mutationUnfollow.mutate(user, {
       onSettled: () => setUnfollowId(null),
