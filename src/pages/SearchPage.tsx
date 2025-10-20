@@ -27,17 +27,20 @@ export default function SearchPage() {
 
   const mutationFollow = useMutation({
     mutationFn: (user) => apiFollow(user),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
+
+    onSuccess: async () =>
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["users"] }),
+        queryClient.invalidateQueries({ queryKey: ["posts"] }),
+      ]),
   });
   const mutationUnfollow = useMutation({
     mutationFn: (user) => apiUnfollow(user),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
+    onSuccess: async () =>
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["users"] }),
+        queryClient.invalidateQueries({ queryKey: ["posts"] }),
+      ]),
   });
   async function search(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
