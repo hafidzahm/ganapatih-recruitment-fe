@@ -7,7 +7,6 @@ import { Link } from "react-router";
 import TimeAgo from "react-timeago";
 import { toast } from "sonner";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
@@ -57,14 +56,7 @@ export function CardStatusComponent({ post, id }) {
   const mutation = useMutation({
     mutationFn: unfollowApi,
     onSuccess: async () => {
-      // If you're invalidating a single query
       await queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-      // // If you're invalidating multiple queries
-      // await Promise.all([
-      //   queryClient.invalidateQueries({ queryKey: ["todos"] }),
-      //   queryClient.invalidateQueries({ queryKey: ["reminders"] }),
-      // ]);
     },
   });
 
