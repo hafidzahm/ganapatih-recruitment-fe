@@ -4,6 +4,7 @@ import PostPaginationContext from "@/contexts/postPaginationContext/postPaginati
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Outlet } from "react-router";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function AuthLayout() {
   return (
@@ -16,6 +17,7 @@ export default function AuthLayout() {
           </div>
         </PostPaginationContext>
       </LoginUserContext>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
