@@ -21,9 +21,14 @@ export default function PostPaginationContext({
     fetchData();
   }, [reload, page]);
 
+  useQuery<Post[], Error>({
+    queryKey: ["posts"],
+    queryFn: fetchData,
+  });
+
   async function fetchData() {
     try {
-      console.log("PaginationContext");
+      console.log("Post Data Context Fetch");
 
       const response = await http.get(`feed?page=${page}&limit=${limit}`);
 

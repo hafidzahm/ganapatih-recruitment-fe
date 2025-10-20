@@ -47,17 +47,10 @@ export default function FeedPage() {
 
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
-  const { fetchData } = usePostPaginationContext();
-  useQuery({
-    queryKey: ["posts"],
-    queryFn: fetchData,
-  });
-
   const mutation = useMutation({
     mutationFn: unfollowApi,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
+    onSuccess: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["posts"] }),
   });
 
   async function unfollowApi(user) {
