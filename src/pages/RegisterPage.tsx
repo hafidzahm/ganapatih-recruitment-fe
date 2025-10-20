@@ -26,8 +26,11 @@ import { http } from "@/utils/axios";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function RegisterPage() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const form = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
@@ -40,6 +43,7 @@ export default function RegisterPage() {
   async function submitRegister(values: AuthSchemaType) {
     console.log(values);
     try {
+      setLoading(true);
       const response = await http.post("/register", {
         username: values.username,
         password: values.password,
@@ -48,6 +52,7 @@ export default function RegisterPage() {
 
       if (response.status === 201) {
         navigate("/login");
+
         return toast.success(
           `Account with username ${response.data.username} created successfully. Lets login with registered account`
         );
@@ -57,12 +62,14 @@ export default function RegisterPage() {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <div className="min-w-screen min-h-screen flex justify-center items-center">
       <Form {...form}>
-        <Card className="w-full max-w-sm">
+        <Card className="w-full mx-5 max-w-sm">
           <form onSubmit={form.handleSubmit(submitRegister)}>
             <CardHeader>
               <CardTitle>Register your account</CardTitle>
@@ -114,11 +121,15 @@ export default function RegisterPage() {
               </div>
             </CardContent>
             <CardFooter className="flex-col gap-2 pt-6">
-              <ButtonComponent
-                type="submit"
-                text="Register"
-                className="w-full"
-              />
+              <ButtonComponent type="submit" className="w-full">
+                {loading ? (
+                  <>
+                    <Loading />
+                  </>
+                ) : (
+                  <>Register</>
+                )}
+              </ButtonComponent>
 
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}

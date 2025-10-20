@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import {
   NavigationMenu,
@@ -12,7 +12,6 @@ import {
 
 import { cn } from "@/lib/utils";
 import ButtonComponent from "./ButtonComponent";
-import { http } from "@/utils/axios";
 import { House, Search, User } from "lucide-react";
 
 import AddStatusForm from "./AddStatusForm";

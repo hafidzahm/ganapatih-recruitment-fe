@@ -4,7 +4,7 @@ import type { Post } from "@/pages/FeedPage";
 import { http } from "@/utils/axios";
 
 // ---
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export default function PostPaginationContext({
   children,
@@ -12,7 +12,7 @@ export default function PostPaginationContext({
   children: ReactNode;
 }) {
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState<number>();
+  const [totalPage, setTotalPage] = useState<number>(0);
   const [posts, setPosts] = useState<Post[]>();
   const [reload, setReload] = useState(0);
   const limit = 10;
@@ -36,20 +36,20 @@ export default function PostPaginationContext({
         if (page === 1) return posts;
         return [...(previous || []), ...(posts || [])];
       });
-      setTotalPage(response?.data?.totalPage);
+      setTotalPage(response?.data?.totalPage || 0);
       return posts;
     } catch (error) {
       console.log({ error });
     }
   }
 
-  useQuery<Post[], Error>({
+  const { isLoading } = useQuery<Post[], Error>({
     queryKey: ["posts"],
     queryFn: fetchData,
     refetchOnMount: "always",
   });
 
-  function applyReload() {
+  async function applyReload() {
     setReload((r) => r + 1);
     return;
   }
@@ -62,6 +62,7 @@ export default function PostPaginationContext({
     page,
     totalPage,
     fetchData,
+    isLoading,
   };
 
   return <PostContext.Provider value={value}> {children}</PostContext.Provider>;

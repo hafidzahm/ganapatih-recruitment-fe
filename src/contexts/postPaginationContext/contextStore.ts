@@ -13,5 +13,6 @@ export type PostContextType = {
   fetchData: () => Promise<Post[] | []>;
   page: number;
   totalPage: number;
-  limit: number;
+
+  isLoading: boolean;
 };
