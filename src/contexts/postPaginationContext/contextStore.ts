@@ -10,4 +10,8 @@ export type PostContextType = {
   setPosts: React.Dispatch<React.SetStateAction<Post[] | undefined>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   applyReload: () => Promise<void>;
+  fetchData: () => Promise<Post[] | []>;
+  page: number;
+  totalPage: number;
+  limit: number;
 };

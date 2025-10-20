@@ -1,15 +1,44 @@
+import ButtonComponent from "@/components/ButtonComponent";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useLoginUserContext from "@/contexts/loginUserContext/useLoginUserContext";
 import useSearchPagination from "@/hooks/useSearchPagination";
+import { http } from "@/utils/axios";
+import { AxiosError } from "axios";
 import { Search } from "lucide-react";
 import { useEffect, type ChangeEvent } from "react";
+import { toast } from "sonner";
+import type { Post } from "./FeedPage";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
+import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
+import type { User } from "@/types/user.type";
 
 export default function SearchPage() {
-  const { results, setInputSearch, setPage, followeeId } =
+  const { results, setInputSearch, setPage, followeeId, fetchData } =
     useSearchPagination();
   const { userId } = useLoginUserContext();
+
+  useQuery<User[], Error>({
+    queryKey: ["users"],
+    queryFn: fetchData,
+  });
+
+  const mutationFollow = useMutation({
+    mutationFn: (user) => apiFollow(user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+  const mutationUnfollow = useMutation({
+    mutationFn: (user) => apiUnfollow(user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
   async function search(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     try {
@@ -19,6 +48,42 @@ export default function SearchPage() {
     } catch (error) {
       console.log({ error });
     }
+  }
+
+  async function apiFollow(user) {
+    try {
+      const response = await http.post(`/follow/${user.id}`);
+      console.log({ response });
+      if (response.status === 200) {
+        toast.success(`You are now following ${user.username}`);
+      }
+      return response;
+    } catch (error) {
+      console.log({ errorFollow: error });
+      if (error instanceof AxiosError) {
+        if (error.status === 400) {
+          toast.error(`You can't follow yourself`);
+        }
+      }
+    }
+  }
+  async function apiUnfollow(user) {
+    try {
+      const response = await http.delete(`/follow/${user.id}`);
+      if (response.status === 200) {
+        toast.success(`You are now unfollowing ${user.username}`);
+      }
+      console.log({ response });
+    } catch (error) {
+      console.log({ errorFollow: error });
+    }
+  }
+
+  async function follow(user) {
+    mutationFollow.mutate(user);
+  }
+  async function unfollow(user) {
+    mutationUnfollow.mutate(user);
   }
   return (
     <div className="flex flex-col justify-center items-center pt-5 px-5">
@@ -40,9 +105,19 @@ export default function SearchPage() {
                 <div className="flex flex-row justify-between items-center">
                   <p>{result.username}</p>
 
-                  <Button>
-                    {userId === followeeId[id][0] ? "Unfollow" : "Follow"}
-                  </Button>
+                  {userId === followeeId[id][0] ? (
+                    <ButtonComponent
+                      handleClick={() => unfollow(result)}
+                      text="Unfollow"
+                      type="button"
+                    />
+                  ) : (
+                    <ButtonComponent
+                      handleClick={() => follow(result)}
+                      text="Follow"
+                      type="button"
+                    />
+                  )}
                 </div>
                 {/* <p>{userId}</p>
                 <p>{followeeId[id]}</p> */}
