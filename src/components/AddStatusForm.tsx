@@ -37,17 +37,10 @@ import type { Post } from "@/pages/FeedPage";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
 export default function AddStatusForm() {
-  const { fetchData } = usePostPaginationContext();
-
-  useQuery<Post[], Error>({
-    queryKey: ["posts"],
-    queryFn: fetchData,
-  });
-
   const mutation = useMutation({
     mutationFn: postStatus,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
   const { open, setIsOpen } = useDialogState(false);

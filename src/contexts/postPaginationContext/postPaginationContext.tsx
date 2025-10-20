@@ -23,7 +23,7 @@ export default function PostPaginationContext({
 
   async function fetchData() {
     try {
-      console.log("PaginationContext");
+      console.log("Post Data Context Fetch");
 
       const response = await http.get(`feed?page=${page}&limit=${limit}`);
 
@@ -42,6 +42,11 @@ export default function PostPaginationContext({
       console.log({ error });
     }
   }
+
+  useQuery<Post[], Error>({
+    queryKey: ["posts"],
+    queryFn: fetchData,
+  });
 
   function applyReload() {
     setReload((r) => r + 1);

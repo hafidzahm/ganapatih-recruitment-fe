@@ -7,7 +7,8 @@ import { Link } from "react-router";
 import TimeAgo from "react-timeago";
 import { toast } from "sonner";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
 export default function FeedPage() {
   const { posts, setPage, page, totalPage } = usePostPaginationContext();
@@ -46,19 +47,24 @@ export default function FeedPage() {
 
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
-  const { applyReload } = usePostPaginationContext();
-  async function unfollow(user) {
-    try {
-      const response = await http.delete(`/follow/${user.userid}`);
 
-      if (response.status === 200) {
-        toast.success(`You are now unfollowing ${user.username}`);
-        applyReload();
-      }
-      console.log({ response });
-    } catch (error) {
-      console.log({ errorFollow: error });
+  const mutation = useMutation({
+    mutationFn: unfollowApi,
+    onSuccess: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["posts"] }),
+  });
+
+  async function unfollowApi(user) {
+    const response = await http.delete(`/follow/${user.userid}`);
+
+    if (response.status === 200) {
+      toast.success(`You are now unfollowing ${user.username}`);
     }
+    console.log({ response });
+    return response;
+  }
+  async function unfollow(user) {
+    mutation.mutate(user);
   }
   return (
     <Card key={id} className="">

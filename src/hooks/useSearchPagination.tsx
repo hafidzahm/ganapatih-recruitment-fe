@@ -1,5 +1,6 @@
 import type { User } from "@/types/user.type";
 import { http } from "@/utils/axios";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 type Follower = {
@@ -29,11 +30,15 @@ export default function useSearchPagination() {
   const [followeeId, setFolloweeId] = useState<(string | undefined)[][]>([]);
   const [fetchPageSearch, setFetchPageSearch] = useState(1);
   useEffect(() => {
-    fetchData();
-  }, [inputSearch, fetchPageSearch]);
+    if (inputSearch) {
+      fetchData();
+    }
+  }, [inputSearch]);
 
   async function fetchData() {
     try {
+      console.log("Search Data Context Fetch");
+
       const response = await http.get(
         `/users?&page=${page}&limit=10&search=${inputSearch}`
       );
@@ -56,9 +61,11 @@ export default function useSearchPagination() {
     }
   }
 
-  async function refetchPageSearch() {
-    setFetchPageSearch((r) => (r += 1));
-  }
+  useQuery<User[], Error>({
+    queryKey: ["users"],
+    queryFn: fetchData,
+  });
+
   const values = {
     setInputSearch,
     setPage,
