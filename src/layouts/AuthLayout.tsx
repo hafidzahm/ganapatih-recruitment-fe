@@ -7,15 +7,15 @@ import { Outlet } from "react-router";
 
 export default function AuthLayout() {
   return (
-    <LoginUserContext layout="Auth">
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <LoginUserContext layout="Auth">
         <PostPaginationContext>
           <div>
             <NavigationBar />
             <Outlet />
           </div>
         </PostPaginationContext>
-      </QueryClientProvider>
-    </LoginUserContext>
+      </LoginUserContext>
+    </QueryClientProvider>
   );
 }
