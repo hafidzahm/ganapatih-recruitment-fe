@@ -7,18 +7,18 @@ import useSearchPagination from "@/hooks/useSearchPagination";
 import { http } from "@/utils/axios";
 import { AxiosError } from "axios";
 import { Search } from "lucide-react";
-import { useEffect, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
-import type { Post } from "./FeedPage";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import usePostPaginationContext from "@/contexts/postPaginationContext/usePostPaginationContext";
+import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
-import type { User } from "@/types/user.type";
+import Loading from "@/components/Loading";
 
 export default function SearchPage() {
   const { results, setInputSearch, setPage, followeeId } =
     useSearchPagination();
   const { userId } = useLoginUserContext();
+  const [followId, setFollowId] = useState(null);
+  const [unfollowId, setUnfollowId] = useState(null);
 
   const mutationFollow = useMutation({
     mutationFn: (user) => apiFollow(user),
@@ -80,10 +80,16 @@ export default function SearchPage() {
   }
 
   async function follow(user) {
-    mutationFollow.mutate(user);
+    setFollowId(user.id);
+    mutationFollow.mutate(user, {
+      onSettled: () => setFollowId(null),
+    });
   }
   async function unfollow(user) {
-    mutationUnfollow.mutate(user);
+    setUnfollowId(user.id);
+    mutationUnfollow.mutate(user, {
+      onSettled: () => setUnfollowId(null),
+    });
   }
   return (
     <div className="flex flex-col justify-center items-center pt-5 px-5">
@@ -108,19 +114,19 @@ export default function SearchPage() {
                   {userId === followeeId[id][0] ? (
                     <ButtonComponent
                       handleClick={() => unfollow(result)}
-                      text="Unfollow"
                       type="button"
-                    />
+                    >
+                      {unfollowId === result.id ? <Loading /> : "Unfollow"}
+                    </ButtonComponent>
                   ) : (
                     <ButtonComponent
                       handleClick={() => follow(result)}
-                      text="Follow"
                       type="button"
-                    />
+                    >
+                      {followId === result.id ? <Loading /> : "Follow"}
+                    </ButtonComponent>
                   )}
                 </div>
-                {/* <p>{userId}</p>
-                <p>{followeeId[id]}</p> */}
               </CardContent>
             </Card>
           );

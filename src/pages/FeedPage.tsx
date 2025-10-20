@@ -13,6 +13,7 @@ import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2Icon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import Loading from "@/components/Loading";
 
 export default function FeedPage() {
   const { posts, setPage, page, totalPage, isLoading } =
@@ -70,6 +71,7 @@ export default function FeedPage() {
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
   const { isLoading } = usePostPaginationContext();
+  // const [loadingUnfollow, ]
 
   const mutation = useMutation({
     mutationFn: unfollowApi,
@@ -138,10 +140,9 @@ export function CardStatusComponent({ post, id }) {
                   </>
                 ) : (
                   <>
-                    <ButtonComponent
-                      handleClick={() => unfollow(post)}
-                      text="Unfollow"
-                    />
+                    <ButtonComponent handleClick={() => unfollow(post)}>
+                      {mutation.isPending ? <Loading /> : "Unfollow"}
+                    </ButtonComponent>
                   </>
                 )}
               </>
