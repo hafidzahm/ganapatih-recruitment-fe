@@ -46,6 +46,7 @@ export default function PostPaginationContext({
   useQuery<Post[], Error>({
     queryKey: ["posts"],
     queryFn: fetchData,
+    refetchOnMount: "always",
   });
 
   function applyReload() {
