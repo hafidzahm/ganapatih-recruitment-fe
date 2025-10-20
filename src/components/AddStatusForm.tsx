@@ -46,8 +46,8 @@ export default function AddStatusForm() {
 
   const mutation = useMutation({
     mutationFn: postStatus,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
   const { open, setIsOpen } = useDialogState(false);
