@@ -16,14 +16,9 @@ import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 import type { User } from "@/types/user.type";
 
 export default function SearchPage() {
-  const { results, setInputSearch, setPage, followeeId, fetchData } =
+  const { results, setInputSearch, setPage, followeeId } =
     useSearchPagination();
   const { userId } = useLoginUserContext();
-
-  useQuery<User[], Error>({
-    queryKey: ["users"],
-    queryFn: fetchData,
-  });
 
   const mutationFollow = useMutation({
     mutationFn: (user) => apiFollow(user),
