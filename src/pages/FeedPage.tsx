@@ -47,6 +47,7 @@ export default function FeedPage() {
 
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
+
   const mutation = useMutation({
     mutationFn: unfollowApi,
     onSuccess: async () =>

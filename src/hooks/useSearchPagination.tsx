@@ -35,11 +35,6 @@ export default function useSearchPagination() {
     }
   }, [inputSearch]);
 
-  useQuery<User[], Error>({
-    queryKey: ["users"],
-    queryFn: fetchData,
-  });
-
   async function fetchData() {
     try {
       console.log("Search Data Context Fetch");
@@ -65,6 +60,11 @@ export default function useSearchPagination() {
       return [];
     }
   }
+
+  useQuery<User[], Error>({
+    queryKey: ["users"],
+    queryFn: fetchData,
+  });
 
   const values = {
     setInputSearch,

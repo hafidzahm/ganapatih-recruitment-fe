@@ -21,11 +21,6 @@ export default function PostPaginationContext({
     fetchData();
   }, [reload, page]);
 
-  useQuery<Post[], Error>({
-    queryKey: ["posts"],
-    queryFn: fetchData,
-  });
-
   async function fetchData() {
     try {
       console.log("Post Data Context Fetch");
@@ -47,6 +42,11 @@ export default function PostPaginationContext({
       console.log({ error });
     }
   }
+
+  useQuery<Post[], Error>({
+    queryKey: ["posts"],
+    queryFn: fetchData,
+  });
 
   function applyReload() {
     setReload((r) => r + 1);
