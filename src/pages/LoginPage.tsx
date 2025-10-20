@@ -72,7 +72,7 @@ export default function LoginPage() {
   return (
     <div className="min-w-screen min-h-screen flex justify-center items-center">
       <Form {...form}>
-        <Card className="w-full max-w-sm">
+        <Card className="w-full mx-5 max-w-sm">
           <form onSubmit={form.handleSubmit(submitLogin)}>
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>

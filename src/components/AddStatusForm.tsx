@@ -35,6 +35,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import getPosts from "@/services/getPosts";
 import type { Post } from "@/pages/FeedPage";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
+import Loading from "./Loading";
 
 export default function AddStatusForm() {
   const mutation = useMutation({
@@ -123,7 +124,13 @@ export default function AddStatusForm() {
                 <Button variant="neutral">Cancel</Button>
               </DialogClose>
               <Button type="submit" form="add-status-form">
-                Save changes
+                {mutation.isPending ? (
+                  <>
+                    <Loading />
+                  </>
+                ) : (
+                  "Create status"
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
