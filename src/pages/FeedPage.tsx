@@ -8,6 +8,8 @@ import TimeAgo from "react-timeago";
 import { toast } from "sonner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
 export default function FeedPage() {
   const { posts, setPage, page, totalPage } = usePostPaginationContext();
@@ -46,19 +48,37 @@ export default function FeedPage() {
 
 export function CardStatusComponent({ post, id }) {
   const { userId } = useLoginUserContext();
-  const { applyReload } = usePostPaginationContext();
-  async function unfollow(user) {
-    try {
-      const response = await http.delete(`/follow/${user.userid}`);
+  const { fetchData } = usePostPaginationContext();
+  useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchData,
+  });
 
-      if (response.status === 200) {
-        toast.success(`You are now unfollowing ${user.username}`);
-        applyReload();
-      }
-      console.log({ response });
-    } catch (error) {
-      console.log({ errorFollow: error });
+  const mutation = useMutation({
+    mutationFn: unfollowApi,
+    onSuccess: async () => {
+      // If you're invalidating a single query
+      await queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+      // // If you're invalidating multiple queries
+      // await Promise.all([
+      //   queryClient.invalidateQueries({ queryKey: ["todos"] }),
+      //   queryClient.invalidateQueries({ queryKey: ["reminders"] }),
+      // ]);
+    },
+  });
+
+  async function unfollowApi(user) {
+    const response = await http.delete(`/follow/${user.userid}`);
+
+    if (response.status === 200) {
+      toast.success(`You are now unfollowing ${user.username}`);
     }
+    console.log({ response });
+    return response;
+  }
+  async function unfollow(user) {
+    mutation.mutate(user);
   }
   return (
     <Card key={id} className="">
