@@ -9,15 +9,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 export default function AuthLayout() {
   return (
     <LoginUserContext layout="Auth">
-      <QueryClientProvider client={queryClient}>
-        <PostPaginationContext>
-          <div>
-            <NavigationBar />
-            <Outlet />
-          </div>
-        </PostPaginationContext>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <PostPaginationContext>
+        <div>
+          <NavigationBar />
+          <Outlet />
+        </div>
+      </PostPaginationContext>
+      <ReactQueryDevtools initialIsOpen={false} />
     </LoginUserContext>
   );
 }

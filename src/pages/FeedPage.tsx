@@ -64,7 +64,11 @@ export function CardStatusComponent({ post, id }) {
   const mutation = useMutation({
     mutationFn: unfollowApi,
     onSuccess: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["posts"] }),
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["users"] }),
+        queryClient.invalidateQueries({ queryKey: ["posts"] }),
+        queryClient.invalidateQueries({ queryKey: ["userLogin"] }),
+      ]),
   });
 
   async function unfollowApi(user) {

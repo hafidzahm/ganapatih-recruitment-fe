@@ -20,9 +20,9 @@ export default function LoginUserContext({
   const [userId, setUserId] = useState();
   const [following, setFollowing] = useState([]);
 
-  useEffect(() => {
-    checkLogin();
-  }, [layout, navigate]);
+  // useEffect(() => {
+  //   checkLogin();
+  // }, [layout, navigate]);
 
   async function checkLogin() {
     try {
@@ -44,7 +44,7 @@ export default function LoginUserContext({
         navigate("/feed"); // ada token
         toast.info(`Welcome back, ${username}`);
       }
-      // return response?.data?.user;
+      return { username, id, following };
     } catch (error) {
       //   console.log({ error });
       if (error instanceof AxiosError) {
@@ -57,6 +57,13 @@ export default function LoginUserContext({
       }
     }
   }
+
+  useQuery({
+    queryKey: ["userLogin"],
+    queryFn: checkLogin,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
 
   const value = {
     username,
