@@ -10,18 +10,31 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle2Icon } from "lucide-react";
+
 export default function FeedPage() {
   const { posts, setPage, page, totalPage } = usePostPaginationContext();
+  const { userId, following } = useLoginUserContext();
 
   function nextPage() {
     setPage((prev) => {
       return (prev += 1);
     });
   }
+
   return (
     <>
-      <div className="flex justify-center items-center pt-5">
+      <div className="flex flex-col justify-center items-center pt-5">
         <div className="max-w-lg w-full px-5 flex flex-col gap-3 pb-25">
+          <div className="sticky top-5 z-50 xl:top-20">
+            {(following?.length as number) < 1 && (
+              <>
+                <AlertNoFollowing />
+              </>
+            )}
+          </div>
+
           <InfiniteScroll
             dataLength={posts?.length ?? 0} //This is important field to render the next data
             next={nextPage}
@@ -51,7 +64,11 @@ export function CardStatusComponent({ post, id }) {
   const mutation = useMutation({
     mutationFn: unfollowApi,
     onSuccess: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["posts"] }),
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["users"] }),
+        queryClient.invalidateQueries({ queryKey: ["posts"] }),
+        queryClient.invalidateQueries({ queryKey: ["userLogin"] }),
+      ]),
   });
 
   async function unfollowApi(user) {
@@ -113,3 +130,16 @@ export type Post =
       username: string;
     }
   | undefined;
+
+export function AlertNoFollowing() {
+  return (
+    <Alert>
+      <CheckCircle2Icon />
+
+      <AlertDescription>
+        You is not following anyone yet. Seek a friend on Discover Tab to see
+        their status.
+      </AlertDescription>
+    </Alert>
+  );
+}

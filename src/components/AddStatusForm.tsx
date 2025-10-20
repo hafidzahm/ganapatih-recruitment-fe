@@ -39,9 +39,12 @@ import { queryClient } from "@/contexts/queryPostContext/queryClientProvider";
 export default function AddStatusForm() {
   const mutation = useMutation({
     mutationFn: postStatus,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
+    onSuccess: async () =>
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["users"] }),
+        queryClient.invalidateQueries({ queryKey: ["posts"] }),
+        queryClient.invalidateQueries({ queryKey: ["userLogin"] }),
+      ]),
   });
   const { open, setIsOpen } = useDialogState(false);
   const form = useForm<StatusSchemaType>({

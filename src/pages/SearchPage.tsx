@@ -27,6 +27,7 @@ export default function SearchPage() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["users"] }),
         queryClient.invalidateQueries({ queryKey: ["posts"] }),
+        queryClient.invalidateQueries({ queryKey: ["userLogin"] }),
       ]),
   });
   const mutationUnfollow = useMutation({
@@ -35,6 +36,7 @@ export default function SearchPage() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["users"] }),
         queryClient.invalidateQueries({ queryKey: ["posts"] }),
+        queryClient.invalidateQueries({ queryKey: ["userLogin"] }),
       ]),
   });
   async function search(event: ChangeEvent<HTMLInputElement>) {
