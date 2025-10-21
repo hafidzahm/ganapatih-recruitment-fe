@@ -11,7 +11,6 @@ type UserSearchResult = {
   id: string;
   username: string;
   followers?: Follower[];
-  // allow other fields returned by the API
   [key: string]: any;
 };
 
@@ -41,7 +40,6 @@ export default function useSearchPagination() {
       const response = await http.get(
         `/users?&page=${page}&limit=10&search=${inputSearch}`
       );
-      // normalize results
       const users = (response.data.users as UserSearchResult[]) || [];
       setResults(users);
       setFolloweeId(
