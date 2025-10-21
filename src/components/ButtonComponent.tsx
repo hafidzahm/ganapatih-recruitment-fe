@@ -14,7 +14,6 @@ export default function ButtonComponent({
   variant?: "default" | "noShadow" | "neutral" | "reverse" | null | undefined;
   text?: string;
   children?: React.ReactNode;
-  // onClick is required because every button should have a click handler
   handleClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }) {
   return (

@@ -70,6 +70,5 @@ export default function LoginUserContext({
     userId,
     following,
   };
-  // always return the provider (consumers will read username/userId)
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
